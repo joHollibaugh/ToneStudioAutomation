@@ -8,4 +8,8 @@
         <RootNamespace>AMPAI.Data</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Services\" />
+    </ItemGroup>
+
 </Project>
