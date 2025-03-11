@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToneStudioAutomation", "ToneStudioAutomation\ToneStudioAutomation.csproj", "{3DBB8F78-6B2E-4AAA-992B-2D506D4537E8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AMPAI.Audio", "AMPAI.Audio\AMPAI.Audio.csproj", "{BC747A21-5709-4B5E-8A15-5A0DD4822AFB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AMPAI.Orchestrator", "AMPAI.Orchestrator\AMPAI.Orchestrator.csproj", "{0BF37CB6-80D6-4619-93A1-D2C8302F64E3}"
@@ -10,16 +8,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AMPAI.Core", "AMPAI.Core\AM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AMPAI.Tests", "AMPAI.Tests\AMPAI.Tests.csproj", "{89A11066-A0E4-4241-ADCF-E1C7564DB310}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AMPAI.Automation", "AMPAI.Automation\AMPAI.Automation.csproj", "{823883E8-EFF7-42D9-BF39-6D5C335330DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListenerAPi", "ListenerAPi\ListenerAPi.csproj", "{8C525FFD-7E9E-4E5D-8792-A2E7B5907305}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3DBB8F78-6B2E-4AAA-992B-2D506D4537E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3DBB8F78-6B2E-4AAA-992B-2D506D4537E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3DBB8F78-6B2E-4AAA-992B-2D506D4537E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3DBB8F78-6B2E-4AAA-992B-2D506D4537E8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BC747A21-5709-4B5E-8A15-5A0DD4822AFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BC747A21-5709-4B5E-8A15-5A0DD4822AFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC747A21-5709-4B5E-8A15-5A0DD4822AFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -36,5 +34,13 @@ Global
 		{89A11066-A0E4-4241-ADCF-E1C7564DB310}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89A11066-A0E4-4241-ADCF-E1C7564DB310}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89A11066-A0E4-4241-ADCF-E1C7564DB310}.Release|Any CPU.Build.0 = Release|Any CPU
+		{823883E8-EFF7-42D9-BF39-6D5C335330DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{823883E8-EFF7-42D9-BF39-6D5C335330DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{823883E8-EFF7-42D9-BF39-6D5C335330DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{823883E8-EFF7-42D9-BF39-6D5C335330DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C525FFD-7E9E-4E5D-8792-A2E7B5907305}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C525FFD-7E9E-4E5D-8792-A2E7B5907305}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C525FFD-7E9E-4E5D-8792-A2E7B5907305}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C525FFD-7E9E-4E5D-8792-A2E7B5907305}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

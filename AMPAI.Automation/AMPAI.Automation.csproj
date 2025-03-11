@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="PuppeteerSharp" Version="20.1.3" />
+      <PackageReference Include="PuppeteerSharp" Version="1.1.0" />
       <PackageReference Include="Selenium.WebDriver" Version="4.29.0" />
       <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="133.0.6943.14100" />
     </ItemGroup>

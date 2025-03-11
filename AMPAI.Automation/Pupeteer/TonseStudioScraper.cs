@@ -1,5 +1,6 @@
 ﻿using PuppeteerSharp;
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ToneStudioAutomation;
@@ -8,39 +9,40 @@ public static class PuppeteerAutomation
 {
     public static async Task RunAsync()
     {
-        // Here, we specify that we want Chrome and set a custom download folder.string chromedriverPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "chromedriver.exe");
-        string chromedriverPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "chromedriver.exe");
-
-        var fetcherOptions = new BrowserFetcherOptions
+        string wsUrl = "";
+        string devToolsUrl = "http://localhost:9222/json"; // DevTools API endpoint
+        using (HttpClient client = new HttpClient())
         {
-            Browser = SupportedBrowser.Chrome,
-            // This path will be combined with your project base directory.
-            Path = chromedriverPath
-        };
-        var browserFetcher = Puppeteer.CreateBrowserFetcher(fetcherOptions);
-        //await browserFetcher.DownloadAsync(); // This will ensure Chrome is downloaded        var browserFetcher = Puppeteer.CreateBrowserFetcher(fetcherOptions);
+                string response = await client.GetStringAsync(devToolsUrl);
+                var sessions = JsonSerializer.Deserialize<JsonElement>(response);
+                // Returns
+                // [ {
+                //     "description": "",
+                //     "devtoolsFrontendUrl": "/devtools/inspector.html?ws=localhost:9223/devtools/page/E418E65EA0C405E7505357A3E9B5D5FB",
+                //     "id": "E418E65EA0C405E7505357A3E9B5D5FB",
+                //     "title": "BOSS TONE STUDIO for KATANA Mk II",
+                //     "type": "page",
+                //     "url": "file:///{$AppData}/Local/Roland/BOSS TONE STUDIO for KATANA MkII/html/index.html",
+                //     "webSocketDebuggerUrl": "ws://localhost:9223/devtools/page/E418E65EA0C405E7505357A3E9B5D5FB"
+                // } ]
+                foreach (var session in sessions.EnumerateArray())
+                {
+                    if (session.GetProperty("title").GetString() == "BOSS TONE STUDIO for KATANA Mk II")
+                    {
+                        wsUrl = session.GetProperty("webSocketDebuggerUrl").GetString();
+                        continue;
+                    }
+                }
+        }
 
-        var launchOptions = new LaunchOptions
+        var browser = await Puppeteer.ConnectAsync(new ConnectOptions
         {
-            ExecutablePath = @"C:\Program Files\Google\Chrome\Application\chrome.exe", // Adjust if needed
-            Headless = false, // Set to false to see the UI
-            Args = new[]
-            {
-                "--allow-file-access-from-files",
-                "--disable-web-security",
-                "--disable-site-isolation-trials"
-            }
-        };
-
-        var browser = await Puppeteer.LaunchAsync(launchOptions);
-
-
-        var page = await browser.NewPageAsync();
-        string fileUrl =
-            "file:///C:/Users/Josiah%20Hollibaugh/AppData/Local/Roland/BOSS%20TONE%20STUDIO%20for%20KATANA%20MkII/html/index.html";
-        await page.GoToAsync(fileUrl);
-        Console.WriteLine("Navigated to Tone Studio page (Puppeteer).");
-
+            IgnoreHTTPSErrors = true,
+            BrowserWSEndpoint = wsUrl,
+        });
+        var pages = await browser.PagesAsync();
+        var page = pages[0]; // Select the correct tab
+        
         // Inject jQuery if it's not already present
         bool hasJQuery = await page.EvaluateExpressionAsync<bool>("!!window.jQuery");
         if (!hasJQuery)
@@ -48,11 +50,28 @@ public static class PuppeteerAutomation
             Console.WriteLine("Injecting jQuery...");
             await page.AddScriptTagAsync(new AddTagOptions { Url = "https://code.jquery.com/jquery-3.6.0.min.js" });
         }
+        
+        // TODO - replace with orchestrator context - publish event to cascade sync / stamp / write ops with recording 
+        Console.WriteLine("Puppeteer connected to CEF devtools successfully - recording inputs every 5 seconds.");
+        string outputPath = @"C:\Users\Josiah Hollibaugh\Documents\KTNAOUT\ToneStudioData.txt";
+        using (StreamWriter writer = new StreamWriter(outputPath, append: true))
+        {
+            while (true)
+            {
+                try
+                {
+                    var result = await page.EvaluateExpressionAsync<string[]>(@"$('#editor-panel-page input').map(function() { return $(this).val(); }).get();");
+                    string output = string.Join(", ", result);
+                    Console.WriteLine($"Successful Response: {output}");
 
-        // Run a jQuery snippet to extract the GAIN value
-        string gainValue = await page.EvaluateExpressionAsync<string>(@"(function(){
-                    return $('#panel-amp-gain-spinner input').val();
-                })()");
-        Console.WriteLine($"Puppeteer: GAIN Value = {gainValue}");
+                    await writer.WriteLineAsync($"{DateTime.UtcNow}: {output}");
+                    await writer.FlushAsync();
+                }
+                catch (PuppeteerException ex)
+                {
+                    Console.WriteLine($"Puppeteer Exception occurred: {ex.Message}");
+                }
+                await Task.Delay(5000);
+            }
+        }
     }
-}
