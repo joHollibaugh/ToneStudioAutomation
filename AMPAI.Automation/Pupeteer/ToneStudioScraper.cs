@@ -1,9 +1,7 @@
-﻿using PuppeteerSharp;
-using System;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
+using PuppeteerSharp;
 
-namespace ToneStudioAutomation;
+namespace AMPAI.Automation.Pupeteer;
 
 public static class PuppeteerAutomation
 {
